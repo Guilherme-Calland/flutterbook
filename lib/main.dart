@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbook/screens/appointments.dart';
-import 'package:flutterbook/screens/contacts.dart';
-import 'package:flutterbook/screens/notes.dart';
-import 'package:flutterbook/screens/tasks.dart';
+import 'package:flutterbook/screens/appointments_screen.dart';
+import 'package:flutterbook/screens/contacts_screen.dart';
+import 'package:flutterbook/screens/notes_screen.dart';
+import 'package:flutterbook/screens/tasks_screen.dart';
 import 'package:flutterbook/utils.dart';
 
 void main() => runApp(FlutterBook());
@@ -40,7 +40,7 @@ class FlutterBook extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              Appointments(), Contacts(), Notes(), Tasks()
+              AppointmentsScreen(), ContactsScreen(), NotesScreen(), TasksScreen()
             ],
           ),
         ),

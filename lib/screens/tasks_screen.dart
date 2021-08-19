@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Contacts extends StatelessWidget {
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(_) {
     return Center(
-      child: Text('Contacts'),
+      child: Text('TasksScreen'),
     );
   }
 }
-
-
