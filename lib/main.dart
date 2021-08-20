@@ -1,11 +1,43 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutterbook/database/notes_db_worker.dart';
 import 'package:flutterbook/screens/appointments_screen.dart';
 import 'package:flutterbook/screens/contacts_screen.dart';
 import 'package:flutterbook/screens/notes_screen.dart';
 import 'package:flutterbook/screens/tasks_screen.dart';
 import 'package:flutterbook/utils.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
-void main() => runApp(FlutterBook());
+NotesDBWorker notesDB = NotesDBWorker();
+
+void main() async {
+  runApp(FlutterBook());
+  testingCreation();
+}
+
+
+Future<void> testingCreation() async {
+  var data = {
+    'title' : 'testTitle',
+    'content' : 'testContext',
+    'color' : 'testColor'
+  };
+
+  int? result = await notesDB.create(data);
+  if(result != null){
+    print('data of id $result was succefully saved');
+  }else{
+    print('result on creation returned null');
+  }
+}
+//
+// Future<File> _getFile() async {
+//   final directory = await getApplicationDocumentsDirectory();
+//   return File("${directory.path}/data.json");
+// }
+
 
 class FlutterBook extends StatelessWidget {
   @override
