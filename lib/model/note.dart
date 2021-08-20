@@ -7,8 +7,9 @@ class Note {
   String? color;
 
   String toString() {
-    return '{'
+    return
+    '{'
     'id=$id, title=$title, content=$content, color=$color'
-        '}';
+    '}';
   }
 }
