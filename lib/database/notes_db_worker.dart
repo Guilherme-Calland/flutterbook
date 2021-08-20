@@ -60,6 +60,34 @@ class NotesDBWorker {
     return null;
   }
 
+  Future<int?> update(Map< String, dynamic> data) async{
+    Database? db = await database;
+    int? result;
+    if(db!=null){
+      result = await db.update(
+          'notes',
+          data,
+          where: 'id = ?',
+          whereArgs: [ data['id'] ]
+      );
+    }
+    return result;
+  }
+
+  Future<int?> delete(int inID) async {
+    Database? db = await database;
+    int? outResult;
+    if(db != null){
+      outResult = await
+      db.delete(
+          'notes',
+          where: 'id=?',
+          whereArgs: [inID]
+      );
+    }
+    return outResult;
+  }
+
   Future< Map< String, dynamic>?> get(int inID) async{
     Database? db = await database;
     if(db != null){
@@ -71,6 +99,4 @@ class NotesDBWorker {
     }
     return null;
   }
-
-
 }
