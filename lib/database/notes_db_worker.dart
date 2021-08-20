@@ -49,4 +49,16 @@ class NotesDBWorker {
     }
     return result;
   }
+
+  Future< Map< String, dynamic>?> get(int inID) async{
+    Database? db = await database;
+    if(db != null){
+      List query = await db.query(
+          'notes', where: 'id = ?', whereArgs: [inID]
+      );
+      final result = query.first;
+      return result;
+    }
+    return null;
+  }
 }

@@ -14,7 +14,8 @@ NotesDBWorker notesDB = NotesDBWorker();
 
 void main() async {
   runApp(FlutterBook());
-  testingCreation();
+  // testingCreation();
+  testingReading();
 }
 
 
@@ -32,12 +33,11 @@ Future<void> testingCreation() async {
     print('result on creation returned null');
   }
 }
-//
-// Future<File> _getFile() async {
-//   final directory = await getApplicationDocumentsDirectory();
-//   return File("${directory.path}/data.json");
-// }
 
+Future<void> testingReading() async {
+  var result = await notesDB.get(2);
+  print(result);
+}
 
 class FlutterBook extends StatelessWidget {
   @override
