@@ -6,16 +6,14 @@ import 'package:flutterbook/screens/appointments_screen.dart';
 import 'package:flutterbook/screens/contacts_screen.dart';
 import 'package:flutterbook/screens/notes_screen.dart';
 import 'package:flutterbook/screens/tasks_screen.dart';
-import 'package:flutterbook/utils.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
 
 NotesDBWorker notesDB = NotesDBWorker();
 
 void main() async {
   runApp(FlutterBook());
   // testingCreation();
-  testingReading();
+  // testingReading();
+  testReadingAll();
 }
 
 
@@ -28,7 +26,7 @@ Future<void> testingCreation() async {
 
   int? result = await notesDB.create(data);
   if(result != null){
-    print('data of id $result was succefully saved');
+    print('data of id $result was successfully saved');
   }else{
     print('result on creation returned null');
   }
@@ -37,6 +35,17 @@ Future<void> testingCreation() async {
 Future<void> testingReading() async {
   var result = await notesDB.get(2);
   print(result);
+}
+
+Future<void> testReadingAll() async {
+  List? result = await notesDB.read();
+  if(result != null){
+    result.forEach((map){
+      print(map);
+    });
+  } else {
+    print('result came in null :(');
+  }
 }
 
 class FlutterBook extends StatelessWidget {

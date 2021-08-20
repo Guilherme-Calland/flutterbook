@@ -50,6 +50,16 @@ class NotesDBWorker {
     return result;
   }
 
+  Future< List< Map>?> read() async{
+    Database? db = await database;
+    if(db!=null){
+      String sql = 'SELECT * FROM notes ORDER BY id';
+      List< Map< String, dynamic>> data = await db.rawQuery(sql);
+      return data;
+    }
+    return null;
+  }
+
   Future< Map< String, dynamic>?> get(int inID) async{
     Database? db = await database;
     if(db != null){
@@ -61,4 +71,6 @@ class NotesDBWorker {
     }
     return null;
   }
+
+
 }
