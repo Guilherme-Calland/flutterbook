@@ -13,7 +13,7 @@ abstract class _NotesStore extends BaseStore with Store{
 
   // ACTIONS
   @action
-  void setColor(String inColor){
+  void setColor(String? inColor){
     color = inColor;
   }
 

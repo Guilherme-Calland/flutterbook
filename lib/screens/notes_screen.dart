@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutterbook/database/notes_db_worker.dart';
 import 'package:flutterbook/main.dart';
 import 'package:flutterbook/stores/notes_store.dart';
 
 import '../utils.dart';
+import 'notes_entry.dart';
+import 'notes_list.dart';
 
 class NotesScreen extends StatelessWidget {
 
@@ -13,8 +16,16 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(_){
-    return Center(
-      child: Text('NotesScreen'),
+    return Observer(
+      builder: (_){
+        return IndexedStack(
+          index: notesStore.stackIndex,
+          children: [
+            NotesList(),
+            NotesEntry()
+          ],
+        );
+      },
     );
   }
 }

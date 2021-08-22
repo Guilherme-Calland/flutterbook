@@ -28,7 +28,6 @@ abstract class _BaseStore with Store {
   @action
   loadData(dynamic inDatabase) async {
     entityList = await inDatabase.read();
-    print(entityList);
   }
 
   @action

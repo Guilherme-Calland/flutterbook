@@ -86,3 +86,13 @@ Future<void> testUpdating() async {
   }
 }
 
+class DummyScreen extends StatelessWidget {
+  final String text;
+  DummyScreen(this.text);
+  @override
+  Widget build(_) {
+    return Center(
+      child: Text(text),
+    );
+  }
+}

@@ -6,6 +6,8 @@ class Note {
   String? content;
   String? color;
 
+  Note(){}
+
   String toString() {
     return
     '{'

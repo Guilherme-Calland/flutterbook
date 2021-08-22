@@ -27,7 +27,7 @@ mixin _$NotesStore on _NotesStore, Store {
   final _$_NotesStoreActionController = ActionController(name: '_NotesStore');
 
   @override
-  void setColor(String inColor) {
+  void setColor(String? inColor) {
     final _$actionInfo =
         _$_NotesStoreActionController.startAction(name: '_NotesStore.setColor');
     try {

@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutterbook/database/notes_db_worker.dart';
 import 'package:flutterbook/screens/appointments_screen.dart';
 import 'package:flutterbook/screens/contacts_screen.dart';
 import 'package:flutterbook/screens/notes_screen.dart';
