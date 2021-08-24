@@ -96,3 +96,16 @@ class DummyScreen extends StatelessWidget {
     );
   }
 }
+
+void showSnackBar(String text, BuildContext inContext) {
+  SnackBar snack = SnackBar(
+    backgroundColor: Colors.red,
+    duration: Duration(seconds: 2),
+    content: Text(text),
+  );
+  ScaffoldMessenger.of(inContext).showSnackBar(snack);
+}
+
+void popAlertDialog(BuildContext inAlertContext) {
+  Navigator.of(inAlertContext).pop();
+}

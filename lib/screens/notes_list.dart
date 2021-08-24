@@ -62,14 +62,17 @@ class NotesList extends StatelessWidget {
                   ],
                   actionPane: Container(),
                   child: Card(
-                    elevation: 8, color: color,
+                    elevation: 8,
+                    color: color,
                     child: ListTile(
                       title: Text('${note.title}'),
                       subtitle: Text('${note.content}'),
                       onTap: () async {
-                        if(note.id != null){
-                          notesStore.entityBeingEdited = await notesDB.get(note.id!);
-                          notesStore.setColor(notesStore.entityBeingEdited.color);
+                        if (note.id != null) {
+                          notesStore.entityBeingEdited =
+                              await notesDB.get(note.id!);
+                          notesStore
+                              .setColor(notesStore.entityBeingEdited.color);
                           notesStore.setStackIndex(1);
                         }
                       },
@@ -93,54 +96,64 @@ class NotesList extends StatelessWidget {
           title: Text('delete note'),
           content: Text('are you sure you want to delete ${inNote.title}?'),
           actions: [
-            GestureDetector(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                color: Colors.blue,
-                child: Text(
-                  'cancel',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+            FlutterBookButton(
+              inColor: Colors.blue,
+              inText: 'cancel',
               onTap: () {
                 popAlertDialog(inAlertContext);
               },
             ),
-            GestureDetector(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                color: Colors.red,
-                child: Text('delete'),
-              ),
+            FlutterBookButton(
+              inColor: Colors.red,
+              inText: 'delete',
               onTap: () async {
-                if(inNote.id!=null){
-                  int? result = await notesDB.delete(inNote.id!);
-                  if(result != null) print('$result note was deleted successfully');
-                  popAlertDialog(inAlertContext);
-                  String text = 'note deleted';
-                  showSnackBar(text, inContext);
-                  notesStore.loadData(notesDB);
-                }else{
-                  print('note id was called on null in trying to delete!');
-                }
+                await deleteNote(inNote, inAlertContext, inContext);
               },
-            )
+            ),
           ],
         );
       },
     );
   }
 
-  void showSnackBar(String text, BuildContext inContext) {
-    SnackBar snack = SnackBar(
-      backgroundColor: Colors.red,
-      duration: Duration(seconds: 2),
-      content: Text(text),
-    );
-    ScaffoldMessenger.of(inContext).showSnackBar(snack);
+  Future<void> deleteNote(
+      Note inNote, BuildContext inAlertContext, BuildContext inContext) async {
+    if (inNote.id != null) {
+      int? result = await notesDB.delete(inNote.id!);
+      if (result != null) print('$result note was deleted successfully');
+      popAlertDialog(inAlertContext);
+      String text = 'note deleted';
+      showSnackBar(text, inContext);
+      notesStore.loadData(notesDB);
+    } else {
+      print('note id was called on null in trying to delete!');
+    }
   }
+}
 
-  void popAlertDialog(BuildContext inAlertContext) {
-    Navigator.of(inAlertContext).pop();
+class FlutterBookButton extends StatelessWidget {
+  FlutterBookButton({
+    required this.inColor,
+    required this.inText,
+    required this.onTap,
+  });
+
+  final Color inColor;
+  final String inText;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        color: inColor,
+        child: Text(
+          inText,
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      onTap: onTap,
+    );
   }
 }
