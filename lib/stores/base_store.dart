@@ -1,3 +1,4 @@
+import 'package:flutterbook/model/note.dart';
 import 'package:mobx/mobx.dart';
 
 part 'base_store.g.dart';
@@ -11,7 +12,11 @@ abstract class _BaseStore with Store {
   int stackIndex = 0;
 
   @observable
-  List entityList = [];
+  ObservableList entityList = [
+    Note(title: 'test data 1'),
+    Note(title: 'test data 2'),
+    Note(title: 'test data 3')
+  ].asObservable();
 
   @observable
   var entityBeingEdited;
@@ -26,7 +31,7 @@ abstract class _BaseStore with Store {
   }
 
   @action
-  loadData(dynamic inDatabase) async {
+  Future<void> loadData(dynamic inDatabase) async {
     entityList = await inDatabase.read();
   }
 

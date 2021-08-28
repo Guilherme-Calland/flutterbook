@@ -38,6 +38,17 @@ mixin _$NotesStore on _NotesStore, Store {
   }
 
   @override
+  void testingStoreFunctionality() {
+    final _$actionInfo = _$_NotesStoreActionController.startAction(
+        name: '_NotesStore.testingStoreFunctionality');
+    try {
+      return super.testingStoreFunctionality();
+    } finally {
+      _$_NotesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 color: ${color}

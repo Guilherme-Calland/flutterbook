@@ -27,13 +27,13 @@ mixin _$BaseStore on _BaseStore, Store {
   final _$entityListAtom = Atom(name: '_BaseStore.entityList');
 
   @override
-  List<dynamic> get entityList {
+  ObservableList<dynamic> get entityList {
     _$entityListAtom.reportRead();
     return super.entityList;
   }
 
   @override
-  set entityList(List<dynamic> value) {
+  set entityList(ObservableList<dynamic> value) {
     _$entityListAtom.reportWrite(value, super.entityList, () {
       super.entityList = value;
     });
@@ -72,7 +72,7 @@ mixin _$BaseStore on _BaseStore, Store {
   final _$loadDataAsyncAction = AsyncAction('_BaseStore.loadData');
 
   @override
-  Future loadData(dynamic inDatabase) {
+  Future<void> loadData(dynamic inDatabase) {
     return _$loadDataAsyncAction.run(() => super.loadData(inDatabase));
   }
 

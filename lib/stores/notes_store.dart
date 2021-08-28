@@ -17,4 +17,8 @@ abstract class _NotesStore extends BaseStore with Store{
     color = inColor;
   }
 
+  @action
+  void testingStoreFunctionality(){
+    print('hello?, is it me your looking for?');
+  }
 }

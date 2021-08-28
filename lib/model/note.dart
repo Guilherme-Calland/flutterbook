@@ -6,7 +6,7 @@ class Note {
   String? content;
   String? color;
 
-  Note(){}
+  Note({this.title}){}
 
   String toString() {
     return
