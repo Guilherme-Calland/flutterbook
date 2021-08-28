@@ -13,9 +13,9 @@ abstract class _BaseStore with Store {
 
   @observable
   ObservableList entityList = [
-    Note(title: 'test data 1'),
-    Note(title: 'test data 2'),
-    Note(title: 'test data 3')
+    Note(id: 1, color: 'green', title: 'test data 1'),
+    Note(id: 2, color: 'yellow', title: 'test data 2'),
+    Note(id: 3, color: 'blue', title: 'test data 3')
   ].asObservable();
 
   @observable

@@ -6,7 +6,7 @@ class Note {
   String? content;
   String? color;
 
-  Note({this.title}){}
+  Note({this.title, this.id, this.color});
 
   String toString() {
     return
