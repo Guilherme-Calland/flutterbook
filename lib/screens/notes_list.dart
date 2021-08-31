@@ -86,16 +86,9 @@ class NotesList extends StatelessWidget {
                       title: Text('${note.title}'),
                       subtitle: Text('${note.content}'),
                       onTap: () async {
-                        if (note.id != null) {
-                          notesStore.entityBeingEdited =
-                              await notesDB.get(note.id!);
-                          notesStore.setColor(note.color);
-                          notesStore.setStackIndex(1);
-                          print('Note:\nid:${note.id}\ntitle:${note.title}');
-                        } else {
-                          print('note was called on null');
-                        }
-                      },
+                        notesStore.setColor(note.color);
+                        notesStore.setStackIndex(1);
+                      }
                     ),
                   ),
                 ),

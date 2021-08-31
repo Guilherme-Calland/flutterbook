@@ -17,6 +17,20 @@ class NotesEntry extends StatelessWidget {
     _contentEditingController.text = notesStore.entityBeingEdited.content;
 
     return Scaffold(
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.title),
+              title: TextFormField(
+                decoration: InputDecoration(hintText: 'title'),
+                controller: ,
+              ),
+            )
+          ],
+        ),
+      ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
         child: Row(
