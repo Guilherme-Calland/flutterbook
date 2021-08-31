@@ -35,9 +35,15 @@ abstract class _BaseStore with Store {
 
   @action
   Future<void> loadData(dynamic inDatabase) async {
-    entityList = await inDatabase.read();
-    print(entityList);
-   }
+    List<Map<String, dynamic>> rawData = await inDatabase.read();
+    //solução temporaria
+    List<Note> notesList = [];
+    rawData.forEach((element) {
+      Note tempNote = Note.mapToNote(element);
+      notesList.add(tempNote);
+    });
+    entityList = notesList;
+  }
 
   @action
   void setStackIndex(int inStackIndex){

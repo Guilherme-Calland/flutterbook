@@ -22,15 +22,15 @@ class Note {
     color = inMap['color'];
   }
 
-  Map<String, dynamic> noteToMap(Note inNote){
+  Map<String, dynamic> noteToMap(){
     Map<String, dynamic> outMap = {
-      'title' : inNote.title,
-      'content' : inNote.content,
-      'color' : inNote.color
+      'title' : this.title,
+      'content' : this.content,
+      'color' : this.color
     };
 
     if(id!=null){
-      outMap['id'] = inNote.id;
+      outMap['id'] = this.id;
     }
 
     return outMap;

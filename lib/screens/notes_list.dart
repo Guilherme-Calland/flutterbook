@@ -86,6 +86,7 @@ class NotesList extends StatelessWidget {
                       title: Text('${note.title}'),
                       subtitle: Text('${note.content}'),
                       onTap: () async {
+                        notesStore.entityBeingEdited = note;
                         notesStore.setColor(note.color);
                         notesStore.setStackIndex(1);
                       }
@@ -128,6 +129,7 @@ class NotesList extends StatelessWidget {
                 }
                 showSnackBar('note deleted', inContext, color: Colors.red);
                 notesStore.loadData(notesDB);
+                popNavigator(inAlertContext);
               },
             )
           ],
