@@ -18,7 +18,7 @@ class NotesList extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () {
-              notesStore.entityBeingEdited = Note();
+              notesStore.entityBeingEdited = Note(title: '',content: '');
               notesStore.setColor(null);
               notesStore.setStackIndex(1);
             },

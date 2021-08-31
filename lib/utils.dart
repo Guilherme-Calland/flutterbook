@@ -97,6 +97,10 @@ class DummyScreen extends StatelessWidget {
   }
 }
 
+void hideKeyboard(BuildContext inContext) {
+  FocusScope.of(inContext).requestFocus(FocusNode());
+}
+
 void showSnackBar(String text, BuildContext inContext, {Color? color}) {
   SnackBar snack = SnackBar(
     backgroundColor: color ?? Colors.red,
