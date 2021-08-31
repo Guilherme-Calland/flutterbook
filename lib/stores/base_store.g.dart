@@ -27,13 +27,13 @@ mixin _$BaseStore on _BaseStore, Store {
   final _$entityListAtom = Atom(name: '_BaseStore.entityList');
 
   @override
-  ObservableList<dynamic> get entityList {
+  List<dynamic> get entityList {
     _$entityListAtom.reportRead();
     return super.entityList;
   }
 
   @override
-  set entityList(ObservableList<dynamic> value) {
+  set entityList(List<dynamic> value) {
     _$entityListAtom.reportWrite(value, super.entityList, () {
       super.entityList = value;
     });

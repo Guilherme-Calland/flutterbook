@@ -11,12 +11,15 @@ abstract class _BaseStore with Store {
   @observable
   int stackIndex = 0;
 
+  // @observable
+  // ObservableList entityList = [
+  //   Note(id: 1, color: 'green', title: 'test data 1'),
+  //   Note(id: 2, color: 'yellow', title: 'test data 2'),
+  //   Note(id: 3, color: 'blue', title: 'test data 3')
+  // ].asObservable();
+
   @observable
-  ObservableList entityList = [
-    Note(id: 1, color: 'green', title: 'test data 1'),
-    Note(id: 2, color: 'yellow', title: 'test data 2'),
-    Note(id: 3, color: 'blue', title: 'test data 3')
-  ].asObservable();
+  List entityList = [];
 
   @observable
   var entityBeingEdited;
@@ -33,7 +36,8 @@ abstract class _BaseStore with Store {
   @action
   Future<void> loadData(dynamic inDatabase) async {
     entityList = await inDatabase.read();
-  }
+    print(entityList);
+   }
 
   @action
   void setStackIndex(int inStackIndex){

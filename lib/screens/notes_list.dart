@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutterbook/model/note.dart';
+import 'package:flutterbook/widgets/flutter_book_button.dart';
 
 import '../utils.dart';
 
 class NotesList extends StatelessWidget {
   @override
-  Widget build(_) {
+  Widget build(BuildContext inContext) {
     return Observer(
       builder: (_) {
         return Scaffold(
@@ -53,15 +54,30 @@ class NotesList extends StatelessWidget {
                   actionExtentRatio: .25,
                   actionPane: SlidableScrollActionPane(),
                   actions: [
-                    IconSlideAction(
-                      caption: 'delete',
-                      color: Colors.red,
-                      icon: Icons.delete,
-                      onTap: () {
-                        // _deleteNote(inContext, note)
-                        print('to be implemented...');
-                      },
-                    ),
+                    GestureDetector(
+                      onTap: () => _deleteNote(inContext, note),
+                      child: Container(
+                        color: Colors.red,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(
+                                'delete',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                   child: Card(
                     elevation: 8,
@@ -70,9 +86,9 @@ class NotesList extends StatelessWidget {
                       title: Text('${note.title}'),
                       subtitle: Text('${note.content}'),
                       onTap: () async {
-                        if(note.id != null){
+                        if (note.id != null) {
                           notesStore.entityBeingEdited =
-                          await notesDB.get(note.id!);
+                              await notesDB.get(note.id!);
                           notesStore.setColor(note.color);
                           notesStore.setStackIndex(1);
                           print('Note:\nid:${note.id}\ntitle:${note.title}');
@@ -86,6 +102,42 @@ class NotesList extends StatelessWidget {
               );
             },
           ),
+        );
+      },
+    );
+  }
+
+  Future _deleteNote(BuildContext inContext, Note inNote) {
+    return showDialog(
+      context: inContext,
+      barrierDismissible: false,
+      builder: (BuildContext inAlertContext) {
+        return AlertDialog(
+          title: Text('delete note'),
+          content: Text('are you sure you want to delete "${inNote.title}"?'),
+          actions: [
+            FlutterBookButton(
+              text: 'cancel',
+              color: Colors.blue,
+              onTap: () {
+                popNavigator(inAlertContext);
+              },
+            ),
+            FlutterBookButton(
+              text: 'delete',
+              color: Colors.red,
+              onTap: () async {
+                int? result = await notesDB.delete(inNote.id!);
+                if(result == 1){
+                  print('$result note was deleted successfully!');
+                } else {
+                  print('something went wrong in note deletion');
+                }
+                showSnackBar('note deleted', inContext, color: Colors.red);
+                notesStore.loadData(notesDB);
+              },
+            )
+          ],
         );
       },
     );
