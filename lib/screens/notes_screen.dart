@@ -7,7 +7,7 @@ import 'notes_list.dart';
 class NotesScreen extends StatelessWidget {
 
   NotesScreen(){
-    notesStore.loadData(notesDB);
+    notesStore.loadData('notes', notesDB);
   }
 
   @override

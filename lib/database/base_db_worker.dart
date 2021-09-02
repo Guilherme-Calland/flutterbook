@@ -1,15 +1,12 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'database_brain.dart' as dbBrain;
 
-class NotesDBWorker {
-  factory NotesDBWorker(){
-    return _notesDBWorker;
-  }
-
-  NotesDBWorker._internal();
-  static final NotesDBWorker _notesDBWorker = NotesDBWorker._internal();
-
+class DatabaseWorker {
+  String databaseType;
   Database? _db;
+
+  DatabaseWorker({required this.databaseType});
 
   Future<Database?> get database async {
     if(_db == null){
@@ -20,7 +17,7 @@ class NotesDBWorker {
 
   Future<Database?> _initializeDatabase() async {
     final databasePath = await getDatabasesPath();
-    String notesDBPath = join(databasePath, 'notes2.db');
+    String notesDBPath = join(databasePath, '$databaseType.db');
     Database db =
     await openDatabase(
         notesDBPath,
@@ -31,21 +28,30 @@ class NotesDBWorker {
   }
 
   Future<void> _onCreateDB(Database db, int version) async {
-    String sql =
-        'CREATE TABLE notes('
-        'id INTEGER PRIMARY KEY AUTOINCREMENT, '
-        'title TEXT, '
-        'content TEXT, '
-        'color TEXT'
-        ')';
-    await db.execute(sql);
+    String? sql = retrieveSqlFromType();
+    if(sql!=null){
+      await db.execute(sql);
+    }
+  }
+
+  String? retrieveSqlFromType(){
+    String? sqlTemp;
+    switch(this.databaseType){
+      case 'notes':
+        sqlTemp = dbBrain.notesSql;
+        break;
+      case 'tasks':
+        sqlTemp = dbBrain.tasksSql;
+        break;
+    }
+    return sqlTemp;
   }
 
   Future<int?> create(Map<String, dynamic> inData) async{
     Database? db = await database;
     int? result;
     if(db!=null){
-      result = await db.insert('notes', inData);
+      result = await db.insert('$databaseType', inData);
     }
     return result;
   }
@@ -53,7 +59,7 @@ class NotesDBWorker {
   Future< List< Map>?> read() async{
     Database? db = await database;
     if(db!=null){
-      String sql = 'SELECT * FROM notes ORDER BY id';
+      String sql = 'SELECT * FROM $databaseType ORDER BY id';
       List< Map< String, dynamic>> data = await db.rawQuery(sql);
       return data;
     }
@@ -65,7 +71,7 @@ class NotesDBWorker {
     int? result;
     if(db!=null){
       result = await db.update(
-          'notes',
+          '$databaseType',
           data,
           where: 'id = ?',
           whereArgs: [ data['id'] ]
@@ -80,7 +86,7 @@ class NotesDBWorker {
     if(db != null){
       outResult = await
       db.delete(
-          'notes',
+          '$databaseType',
           where: 'id=?',
           whereArgs: [inID]
       );
@@ -92,7 +98,7 @@ class NotesDBWorker {
     Database? db = await database;
     if(db != null){
       List query = await db.query(
-          'notes', where: 'id = ?', whereArgs: [inID]
+          '$databaseType', where: 'id = ?', whereArgs: [inID]
       );
       final result = query.first;
       return result;

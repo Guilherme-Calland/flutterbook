@@ -128,7 +128,7 @@ class NotesList extends StatelessWidget {
                   print('something went wrong in note deletion');
                 }
                 showSnackBar(inContext, inText: 'note deleted', inColor: Colors.red);
-                notesStore.loadData(notesDB);
+                notesStore.loadData('notes', notesDB);
                 popNavigator(inAlertContext);
               },
             )

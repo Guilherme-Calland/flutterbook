@@ -81,7 +81,7 @@ class NotesEntry extends StatelessWidget {
                   color: Colors.blue,
                   onTap: () {
                     hideKeyboard(inContext);
-                    notesStore.loadData(notesStore);
+                    notesStore.loadData('notes', notesDB);
                     notesStore.setStackIndex(0);
                   },
                 ),
@@ -128,7 +128,7 @@ class NotesEntry extends StatelessWidget {
       print('$result not was updated in the database!');
     }
 
-    notesStore.loadData(notesDB);
+    notesStore.loadData('notes', notesDB);
     notesStore.setStackIndex(0);
     showSnackBar(inContext, inText: 'Note Saved', inColor: Colors.green);
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbook/database/notes_db_worker.dart';
+import 'package:sqflite/sqflite.dart';
+import 'database/base_db_worker.dart';
 import 'mobx_stores/notes/notes_store.dart';
+import 'mobx_stores/tasks/tasks_store.dart';
 
 // Future selectDate(
 //   BuildContext inContext, BaseStore inStore, String inDateString
@@ -29,8 +31,13 @@ import 'mobx_stores/notes/notes_store.dart';
 //   }
 // }
 
-NotesDBWorker notesDB = NotesDBWorker();
-NotesStore notesStore = NotesStore();
+//NOTES
+final notesDB = DatabaseWorker(databaseType: 'notes');
+final notesStore = NotesStore();
+
+//TASKS
+final tasksDB = DatabaseWorker(databaseType: 'tasks');
+final tasksStore = TasksStore();
 
 Future<void> testDeleting() async {
   int? result = await notesDB.delete(2);
@@ -112,4 +119,17 @@ void toBeImplemented(){
 
 void popNavigator(BuildContext inAlertContext) {
   Navigator.of(inAlertContext).pop();
+}
+
+class DummyScreen extends StatelessWidget {
+  final String? text;
+  DummyScreen({this.text});
+  @override
+  Widget build(_) {
+    return Center(
+      child: Text(
+          text ?? 'dur dur'
+      ),
+    );
+  }
 }

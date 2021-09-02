@@ -72,8 +72,8 @@ mixin _$BaseStore on _BaseStore, Store {
   final _$loadDataAsyncAction = AsyncAction('_BaseStore.loadData');
 
   @override
-  Future<void> loadData(dynamic inDatabase) {
-    return _$loadDataAsyncAction.run(() => super.loadData(inDatabase));
+  Future<void> loadData(String inType, dynamic inDatabase) {
+    return _$loadDataAsyncAction.run(() => super.loadData(inType, inDatabase));
   }
 
   final _$_BaseStoreActionController = ActionController(name: '_BaseStore');
