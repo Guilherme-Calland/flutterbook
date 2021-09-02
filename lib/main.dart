@@ -21,16 +21,16 @@ class FlutterBook extends StatelessWidget {
             bottom: TabBar(
               tabs: [
                 Tab(
+                  icon: Icon(Icons.note),
+                  // text: 'notes',
+                ),
+                Tab(
                   icon: Icon(Icons.date_range),
                   // text: 'appointments',
                 ),
                 Tab(
                   icon: Icon(Icons.contacts),
                   // text: 'contacts',
-                ),
-                Tab(
-                  icon: Icon(Icons.note),
-                  // text: 'notes',
                 ),
                 Tab(
                   icon: Icon(Icons.assignment_turned_in),
@@ -41,7 +41,7 @@ class FlutterBook extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              AppointmentsScreen(), ContactsScreen(), NotesScreen(), TasksScreen()
+              NotesScreen(), AppointmentsScreen(), ContactsScreen(),TasksScreen()
             ],
           ),
         ),

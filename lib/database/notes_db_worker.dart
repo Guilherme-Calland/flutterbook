@@ -20,7 +20,7 @@ class NotesDBWorker {
 
   Future<Database?> _initializeDatabase() async {
     final databasePath = await getDatabasesPath();
-    String notesDBPath = join(databasePath, 'notes.db');
+    String notesDBPath = join(databasePath, 'notes2.db');
     Database db =
     await openDatabase(
         notesDBPath,

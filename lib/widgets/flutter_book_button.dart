@@ -14,7 +14,7 @@ class FlutterBookButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         color: color,
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4,),
+        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 24,),
         child: Text(text, style: TextStyle(color: Colors.white,),),
       ),
     );

@@ -7,162 +7,131 @@ import 'package:flutterbook/widgets/flutter_book_button.dart';
 import '../utils.dart';
 
 class NotesEntry extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _titleEditingController = TextEditingController();
-  final _contentEditingController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext inContext) {
-    
-    if(notANewNote()){
-      setEntriesToUpdatingNote();
-    }
-    
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            ListTile(
-              leading: Icon(Icons.title),
-              title: TextFormField(
-                controller: _titleEditingController,
-                decoration: InputDecoration(hintText: 'title'),
-                onChanged: (String? inValue){
-                  notesStore.entityBeingEdited.title = inValue;
-                },
-                validator: checkIfInputIsValid,
-              ),
+  Widget build(_) {
+    return Observer(
+      builder: (BuildContext inContext) {
+        checkIfCreatingOrEditing();
+        return Scaffold(
+          body: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.title),
+                  title: TextFormField(
+                    decoration: InputDecoration(hintText: 'title'),
+                    controller: _titleController,
+                    validator: (String? inValue) {
+                      return validateText(
+                          inValue, 'please enter a valid title');
+                    },
+                    onChanged: (String inValue) {
+                      notesStore.entityBeingEdited.title = inValue;
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.content_paste),
+                  title: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 8,
+                    decoration: InputDecoration(hintText: 'content'),
+                    controller: _contentController,
+                    validator: (String? inValue) {
+                      return validateText(
+                          inValue, 'please enter valid content');
+                    },
+                    onChanged: (String inValue){
+                      notesStore.entityBeingEdited.content = inValue;
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.color_lens),
+                  title: Row(
+                    children: [
+                      ColorSticker(inColor: Colors.red, inColorName: 'red'),
+                      Spacer(),
+                      ColorSticker(inColor: Colors.green, inColorName: 'green'),
+                      Spacer(),
+                      ColorSticker(inColor: Colors.blue, inColorName: 'blue'),
+                      Spacer(),
+                      ColorSticker(inColor: Colors.yellow, inColorName: 'yellow'),
+                      Spacer(),
+                      ColorSticker(inColor: Colors.grey, inColorName: 'grey'),
+                      Spacer(),
+                      ColorSticker(inColor: Colors.purple, inColorName: 'purple',)
+                    ],
+                  )
+                )
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.content_paste),
-              title: TextFormField(
-                controller: _contentEditingController,
-                onChanged: (String? inValue){
-                  notesStore.entityBeingEdited.content = inValue;
-                },
-                keyboardType: TextInputType.multiline,
-                maxLines: 8,
-                decoration: InputDecoration(hintText: 'content'),
-                validator: checkIfInputIsValid,
-              ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            child: Row(
+              children: [
+                FlutterBookButton(
+                  text: 'cancel',
+                  color: Colors.blue,
+                  onTap: () {
+                    hideKeyboard(inContext);
+                    notesStore.loadData(notesStore);
+                    notesStore.setStackIndex(0);
+                  },
+                ),
+                Spacer(),
+                FlutterBookButton(
+                  text: 'save',
+                  color: Colors.green,
+                  onTap: () {
+                    _save(inContext);
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.color_lens),
-              title: Row(
-                children: [
-                  ColorSticker(inColor: Colors.red, inColorName: 'red',),
-                  Spacer(),
-                  ColorSticker(inColorName: 'green', inColor: Colors.green),
-                  Spacer(),
-                  ColorSticker(inColorName: 'blue', inColor: Colors.blue,),
-                  Spacer(),
-                  ColorSticker(inColorName: 'yellow', inColor: Colors.yellow,),
-                  Spacer(),
-                  ColorSticker(inColorName: 'grey', inColor: Colors.grey,),
-                  Spacer(),
-                  ColorSticker(inColorName: 'purple', inColor: Colors.purple,),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-        child: Row(
-          children: [
-            FlutterBookButton(
-              text: 'cancel',
-              color: Colors.pink,
-              onTap: () {
-                hideKeyboard(inContext);
-                notesStore.loadData(notesDB);
-                notesStore.setStackIndex(0);
-              },
-            ),
-            Spacer(),
-            FlutterBookButton(
-              text: 'save',
-              color: Colors.green,
-              onTap: () {
-                _save(inContext);
-              },
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  void setEntriesToUpdatingNote() {
-    _titleEditingController.text = notesStore.entityBeingEdited.title;
-    _contentEditingController.text = notesStore.entityBeingEdited.content;
+  void checkIfCreatingOrEditing() {
+    if (notesStore.entityBeingEdited != null) {
+      if (notesStore.entityBeingEdited.id != null) {
+        _titleController.text = notesStore.entityBeingEdited.title;
+        _contentController.text = notesStore.entityBeingEdited.content;
+      }
+    }
   }
-
-  bool notANewNote() => notesStore.entityBeingEdited != null;
 
   void _save(BuildContext inContext) async {
-    if( !_formKey.currentState!.validate()){
-      return;
-    }else {
-      if (notesStore.entityBeingEdited.id == null) {
-        int? result = await _createNewNote();
-        if (result != null) {
-          if (result >= 0) {
-            showSnackBar('Note Created', inContext, color: Colors.green);
-          }
-        }
-      } else {
-        int? result = await updateOldNote();
-        if (result != null) {
-          if (result >= 0) {
-            showSnackBar('Note Saved', inContext, color: Colors.blue);
-          }
-        }
+    if (_formKey.currentState != null) {
+      if (!_formKey.currentState!.validate()) {
+        return;
       }
-      notesStore.loadData(notesDB);
-      notesStore.setStackIndex(0);
-    }
-  }
-
-  Future<int?> updateOldNote() async {
-    Map<String, dynamic> data = notesStore.entityBeingEdited.noteToMap();
-    int? result = await notesDB.update(data);
-    if(result != null){
-      if(result >= 0){
-        print('$result note was updated successfully!');
-      }
-    }else{
-      print('something went wrong updating');
     }
 
-    return result;
-  }
+    Note inNote = notesStore.entityBeingEdited;
+    Map<String, dynamic> data = inNote.noteToMap();
 
-  Future<int?> _createNewNote() async {
-    Map<String, dynamic> data = notesStore.entityBeingEdited.noteToMap();
-    int? result = await notesDB.create(data);
-    if(result != null){
-      if(result >= 0){
-        print('note of id $result was created successfully!');
-      } else {
-        print('note was not created');
-      }
+    if (isANewNote()) {
+      int? result = await notesDB.create(data);
+      print('note of id $result was saved in the database!');
     } else {
-      print('note was called on null');
+      int? result = await notesDB.update(data);
+      print('$result not was updated in the database!');
     }
-    return result;
+
+    notesStore.loadData(notesDB);
+    notesStore.setStackIndex(0);
+    showSnackBar(inContext, inText: 'Note Saved', inColor: Colors.green);
   }
 
-  String? checkIfInputIsValid(String? inValue) {
-    if (inValue == null)
-      print('title was given a null value');
-    else if (inValue!.length == 0) {
-      return 'please enter a title';
-    }
-    return null;
-  }
+  bool isANewNote() => notesStore.entityBeingEdited.id == null;
 }
-
-

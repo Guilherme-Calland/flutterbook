@@ -9,6 +9,21 @@ part of 'base_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BaseStore on _BaseStore, Store {
+  final _$entityBeingEditedAtom = Atom(name: '_BaseStore.entityBeingEdited');
+
+  @override
+  dynamic get entityBeingEdited {
+    _$entityBeingEditedAtom.reportRead();
+    return super.entityBeingEdited;
+  }
+
+  @override
+  set entityBeingEdited(dynamic value) {
+    _$entityBeingEditedAtom.reportWrite(value, super.entityBeingEdited, () {
+      super.entityBeingEdited = value;
+    });
+  }
+
   final _$stackIndexAtom = Atom(name: '_BaseStore.stackIndex');
 
   @override
@@ -39,21 +54,6 @@ mixin _$BaseStore on _BaseStore, Store {
     });
   }
 
-  final _$entityBeingEditedAtom = Atom(name: '_BaseStore.entityBeingEdited');
-
-  @override
-  dynamic get entityBeingEdited {
-    _$entityBeingEditedAtom.reportRead();
-    return super.entityBeingEdited;
-  }
-
-  @override
-  set entityBeingEdited(dynamic value) {
-    _$entityBeingEditedAtom.reportWrite(value, super.entityBeingEdited, () {
-      super.entityBeingEdited = value;
-    });
-  }
-
   final _$chosenDateAtom = Atom(name: '_BaseStore.chosenDate');
 
   @override
@@ -79,7 +79,7 @@ mixin _$BaseStore on _BaseStore, Store {
   final _$_BaseStoreActionController = ActionController(name: '_BaseStore');
 
   @override
-  void setChosenDate(String inDate) {
+  dynamic setChosenDate(String inDate) {
     final _$actionInfo = _$_BaseStoreActionController.startAction(
         name: '_BaseStore.setChosenDate');
     try {
@@ -90,11 +90,11 @@ mixin _$BaseStore on _BaseStore, Store {
   }
 
   @override
-  void setStackIndex(int inStackIndex) {
+  void setStackIndex(int index) {
     final _$actionInfo = _$_BaseStoreActionController.startAction(
         name: '_BaseStore.setStackIndex');
     try {
-      return super.setStackIndex(inStackIndex);
+      return super.setStackIndex(index);
     } finally {
       _$_BaseStoreActionController.endAction(_$actionInfo);
     }
@@ -103,9 +103,9 @@ mixin _$BaseStore on _BaseStore, Store {
   @override
   String toString() {
     return '''
+entityBeingEdited: ${entityBeingEdited},
 stackIndex: ${stackIndex},
 entityList: ${entityList},
-entityBeingEdited: ${entityBeingEdited},
 chosenDate: ${chosenDate}
     ''';
   }
